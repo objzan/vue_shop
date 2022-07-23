@@ -291,7 +291,7 @@ export default {
     },
     // 点击确定按钮添加用户
     addUser() {
-      this.$refs.addFormRef.validate(async (valid) => {
+      this.$refs.addFormRef.validate(async valid => {
         console.log(valid)
         if (valid) {
           const { data: res } = await this.$http.post('users', this.addForm)
@@ -321,7 +321,7 @@ export default {
     },
     // 修改用户信息
     editUserFn() {
-      this.$refs.editFormRef.validate(async (valid) => {
+      this.$refs.editFormRef.validate(async valid => {
         if (valid) {
           const { data: res } = await this.$http.put(`users/${this.editForm.id}`, this.editForm)
           if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
@@ -339,7 +339,7 @@ export default {
         distinguishCancelAndClose: true,
         confirmButtonText: '确定',
         cancelButtonText: '取消'
-      }).catch((err) => err)
+      }).catch(err => err)
       if (confirmResult !== 'confirm') {
         return this.$message.info('取消删除')
       }
