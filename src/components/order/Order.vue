@@ -9,6 +9,16 @@
 
     <!-- 卡片视图 -->
     <el-card class="box-card">
+      <!-- 输入框区域 -->
+      <el-row>
+        <el-col :span="8">
+          <el-input placeholder="请输入内容">
+            <el-button slot="append" icon="el-icon-search"></el-button>
+          </el-input>
+        </el-col>
+      </el-row>
+
+      <!-- 表格区域 -->
       <el-table :data="orderList" border stripe>
         <el-table-column type="index" label="#"></el-table-column>
         <el-table-column label="订单编号" prop="order_number"></el-table-column>
@@ -43,6 +53,7 @@
         </el-table-column>
       </el-table>
 
+      <!-- 分页区域 -->
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -56,7 +67,7 @@
     </el-card>
 
     <!-- 编辑对话框 -->
-    <el-dialog title="提示" :visible.sync="adressDialogVisible" width="50%">
+    <el-dialog title="地址" :visible.sync="adressDialogVisible" width="50%">
       <!-- 表单区域 -->
       <el-form :model="adressForm" :rules="adressFormRules" ref="adressFormRef" label-width="100px">
         <el-form-item label="活动名称" prop="adress1">
@@ -100,24 +111,32 @@ export default {
   },
   data() {
     return {
+      // 获取订单数据查询对象
       queryInfo: {
         query: '',
         pagenum: 1,
         pagesize: 10
       },
+      // 订单数据列表
       orderList: [],
+      // 订单数据数量
       total: 0,
-      adressDialogVisible: false,
+      adressDialogVisible: false, // 地址对话框显示状态
+      // 地址对话框数据
       adressForm: {
         adress1: [],
         adress2: ''
       },
+      // 地址对话框校验规则
       adressFormRules: {
         adress1: [{ required: true, message: '请选市/县', trigger: 'blur' }],
         adress2: [{ required: true, message: '请输入详细地址', trigger: 'blur' }]
       },
+      // 地址数据
       cityData,
+      // 物流信息对话框显示状态
       showLocationDialogVisible: false,
+      // 物流信息死数据
       progressInfo: [
         {
           time: '2018-05-10 09:39:00',
@@ -183,6 +202,7 @@ export default {
     }
   },
   methods: {
+    // 获取订单数据
     async getOrderList() {
       const { data: res } = await this.$http.get('orders', { params: this.queryInfo })
       console.log(res)
@@ -190,17 +210,21 @@ export default {
       this.orderList = res.data.goods
       this.total = res.data.total
     },
+    // 改变每页显示数量触发
     handleSizeChange(newPageSize) {
       this.queryInfo.pagesize = newPageSize
       this.getOrderList()
     },
+    // 改变页码触发
     handleCurrentChange(newPageNum) {
       this.queryInfo.pagenum = newPageNum
       this.getOrderList()
     },
+    // 显示地址对话框
     showEditDialog() {
       this.adressDialogVisible = true
     },
+    // 显示物流信息对话框
     showLocationDialog() {
       this.showLocationDialogVisible = true
     }
