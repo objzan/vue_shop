@@ -9,7 +9,7 @@
 
     <!-- 卡片视图 -->
     <el-card class="box-card">
-      <!-- 输入框区域 -->
+      <!-- 搜索框区域 -->
       <el-row>
         <el-col :span="8">
           <el-input placeholder="请输入内容">
@@ -85,6 +85,7 @@
 
     <!-- 物流信息对话框 -->
     <el-dialog title="物流信息" :visible.sync="showLocationDialogVisible" width="50%">
+      <!-- 时间线区域 -->
       <el-timeline>
         <el-timeline-item
           v-for="(activity, index) in progressInfo"
@@ -103,6 +104,7 @@
 </template>
 
 <script>
+// 导入地区
 import cityData from './citydata.js'
 export default {
   name: 'goods-order',
@@ -119,24 +121,26 @@ export default {
       },
       // 订单数据列表
       orderList: [],
+
       // 订单数据数量
       total: 0,
       adressDialogVisible: false, // 地址对话框显示状态
+
       // 地址对话框数据
       adressForm: {
         adress1: [],
         adress2: ''
       },
-      // 地址对话框校验规则
+      // 地址对话框检验规则
       adressFormRules: {
         adress1: [{ required: true, message: '请选市/县', trigger: 'blur' }],
         adress2: [{ required: true, message: '请输入详细地址', trigger: 'blur' }]
       },
-      // 地址数据
+      // 城市数据
       cityData,
-      // 物流信息对话框显示状态
+      // 显示物流信息对话框显示状态
       showLocationDialogVisible: false,
-      // 物流信息死数据
+      // 物流信息数据
       progressInfo: [
         {
           time: '2018-05-10 09:39:00',
@@ -210,12 +214,14 @@ export default {
       this.orderList = res.data.goods
       this.total = res.data.total
     },
-    // 改变每页显示数量触发
+
+    // 改变订单每页显示数量触发
     handleSizeChange(newPageSize) {
       this.queryInfo.pagesize = newPageSize
       this.getOrderList()
     },
-    // 改变页码触发
+
+    // 改变订单页码触发
     handleCurrentChange(newPageNum) {
       this.queryInfo.pagenum = newPageNum
       this.getOrderList()

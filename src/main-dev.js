@@ -19,6 +19,9 @@ import 'quill/dist/quill.core.css' // import styles
 import 'quill/dist/quill.snow.css' // for snow theme
 import 'quill/dist/quill.bubble.css' // for bubble theme
 
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
 // 导入axios
 import axios from 'axios'
 // 配置请求根路径
@@ -27,6 +30,12 @@ axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
 // 请求拦截器
 axios.interceptors.request.use(config => {
   config.headers.Authorization = window.localStorage.getItem('token')
+  NProgress.start()
+  return config
+})
+
+axios.interceptors.response.use(config => {
+  NProgress.done()
   return config
 })
 
